@@ -1,0 +1,184 @@
+openapi: 3.0.0
+info:
+  title: PASTA System API Contracts
+  description: API contracts between the PASTA system and various services.
+  version: 1.0.0
+
+paths:
+  /cms/articles:
+    get:
+      summary: "Retrieve list of articles from CMS"
+      parameters:
+        - name: "category"
+          in: "query"
+          description: "Category filter for articles"
+          required: false
+          schema:
+            type: "string"
+        - name: "limit"
+          in: "query"
+          description: "Limit the number of articles retrieved"
+          required: false
+          schema:
+            type: "integer"
+      responses:
+        '200':
+          description: "A list of articles"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    id:
+                      type: "integer"
+                    title:
+                      type: "string"
+                    content:
+                      type: "string"
+                    date_published:
+                      type: "string"
+                      format: "date-time"
+
+  /cms/articles/{id}:
+    get:
+      summary: "Retrieve a specific article by ID"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Article ID"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        '200':
+          description: "An article detail"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  id:
+                    type: "integer"
+                  title:
+                    type: "string"
+                  content:
+                    type: "string"
+                  date_published:
+                    type: "string"
+                    format: "date-time"
+
+  /loyalty/points:
+    get:
+      summary: "Get loyalty points balance for a user"
+      parameters:
+        - name: "user_id"
+          in: "query"
+          description: "User ID to retrieve loyalty points"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        '200':
+          description: "Loyalty points balance"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  user_id:
+                    type: "string"
+                  points_balance:
+                    type: "integer"
+
+  /loyalty/points/transaction:
+    post:
+      summary: "Add or deduct points from a user's loyalty balance"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                user_id:
+                  type: "string"
+                points:
+                  type: "integer"
+                action:
+                  type: "string"
+                  enum: ["add", "deduct"]
+                  description: "Action to be performed on points balance"
+      responses:
+        '200':
+          description: "Status of the points transaction"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  status:
+                    type: "string"
+                  updated_balance:
+                    type: "integer"
+
+  /responsible-gaming/self-exclusion:
+    post:
+      summary: "Enroll a user in self-exclusion for responsible gaming"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                user_id:
+                  type: "string"
+                exclusion_period:
+                  type: "string"
+                  description: "Period of self-exclusion (e.g., '30 days', '6 months')"
+      responses:
+        '200':
+          description: "Self-exclusion status"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  status:
+                    type: "string"
+                  exclusion_start_date:
+                    type: "string"
+                    format: "date-time"
+                  exclusion_end_date:
+                    type: "string"
+                    format: "date-time"
+
+  /responsible-gaming/status/{user_id}:
+    get:
+      summary: "Check the responsible gaming status of a user"
+      parameters:
+        - name: "user_id"
+          in: "path"
+          description: "User ID to retrieve responsible gaming status"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        '200':
+          description: "Responsible gaming status"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  user_id:
+                    type: "string"
+                  exclusion_status:
+                    type: "string"
+                    enum: ["active", "inactive"]
+                  exclusion_start_date:
+                    type: "string"
+                    format: "date-time"
+                  exclusion_end_date:
+                    type: "string"
+                    format: "date-time"

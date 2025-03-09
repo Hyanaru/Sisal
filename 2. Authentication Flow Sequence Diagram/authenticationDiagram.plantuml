@@ -1,0 +1,25 @@
+@startuml
+actor User
+participant "Web Application" as WebApp
+participant "Amazon Cognito" as Cognito
+participant "Multi-Factor Authentication (MFA)" as MFA
+participant "AWS Lambda" as Lambda
+participant "KYC Service (Jumio/Onfido/ID.me)" as KYCService
+participant "DynamoDB (Risk Scoring and Logs)" as DynamoDB
+participant "AWS Fraud Detector (AML Compliance)" as FraudDetector
+
+User -> WebApp : Initiate Authentication (Web, iOS, Android)
+WebApp -> Cognito : Request authentication (OAuth 2.0 / OIDC)
+Cognito -> User : Request MFA code
+User -> MFA : Provide MFA code (TOTP / Google Authenticator)
+MFA -> Cognito : Validate MFA code
+Cognito -> WebApp : Return Auth token
+WebApp -> Lambda : Initiate KYC process (AWS Lambda)
+Lambda -> KYCService : Send identity for verification (Jumio/Onfido/ID.me)
+KYCService -> Lambda : Return KYC verification result
+Lambda -> DynamoDB : Store user risk score and compliance audit log
+Lambda -> FraudDetector : Perform AML compliance check (Fraud Detection)
+FraudDetector -> Lambda : Return Fraud detection result
+Lambda -> WebApp : Return final authentication result (Verified)
+
+@enduml

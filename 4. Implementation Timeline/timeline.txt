@@ -1,0 +1,24 @@
+gantt
+title PASTA Implementation Timeline
+
+dateFormat  YYYY-MM-DD
+section Authentication & KYC
+Cognito Setup & OAuth 2.0       :done, 2025-01-01, 2025-02-01
+MFA & Token Handling            :active, 2025-02-02, 2025-03-01
+KYC Provider Integration (Jumio) : 2025-03-02, 2025-04-01
+AML Compliance & Fraud Detection : 2025-04-02, 2025-05-01
+
+section Content Management
+Headless CMS (Contentful) Setup  : 2025-02-01, 2025-02-28
+API Development for Content      : 2025-03-01, 2025-03-31
+Personalized Content Engine      : 2025-04-01, 2025-05-15
+
+section Integrations
+Loyalty Program API Integration  : 2025-03-15, 2025-04-15
+Responsible Gaming API Contract  :crit, 2025-03-01, 2025-03-31
+Responsible Gaming Integration   :crit, 2025-04-01, 2025-05-30
+
+section Testing & Deployment
+End-to-End Testing               : 2025-05-01, 2025-06-30
+Security & Compliance Audits     : 2025-07-01, 2025-07-20
+Final Deployment                 : milestone, 2025-07-30

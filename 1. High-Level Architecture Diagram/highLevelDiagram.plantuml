@@ -1,0 +1,31 @@
+@startuml
+
+skinparam linetype ortho
+
+rectangle "PASTA System" {
+  package "Authentication & KYC" {
+    [User] --> [Amazon Cognito] : "Authenticate/Login"
+    [Amazon Cognito] --> [AWS Lambda] : "MFA & Token Processing"
+    [AWS Lambda] --> [Amazon DynamoDB] : "Risk Scoring & Logging"
+    [AWS Lambda] --> [KYC Provider (Jumio/Onfido)] : "Identity Verification"
+    [AWS Lambda] --> [AWS Fraud Detector] : "AML Compliance"
+  }
+  
+  package "Content Management" {
+    [Admin] --> [Contentful CMS] : "Manage Content"
+    [Contentful CMS] --> [AWS ECS] : "API Integration"
+    [AWS ECS] --> [Amazon ElastiCache (Redis)] : "Cache Content"
+    [AWS ECS] --> [Apache Kafka] : "Stream Data"
+    [Apache Kafka] --> [Elasticsearch] : "Index Personalized Content"
+  }
+  
+  package "Integrations" {
+    [User] --> [Amazon API Gateway] : "Interact with Services"
+    [Amazon API Gateway] --> [Loyalty Program API] : "Get User Rewards"
+    [Amazon API Gateway] --> [Responsible Gaming API] : "Monitor Player Behavior"
+    [Amazon API Gateway] --> [AWS Lambda] : "Enforce Spending Limits"
+    [AWS Lambda] --> [Amazon DynamoDB] : "Log Responsible Gaming Data"
+  }
+}
+
+@enduml
