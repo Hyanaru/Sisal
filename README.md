@@ -39,4 +39,4 @@ The frontend code for PASTA can be done in react + react native in order to reus
 ---
 
 ## 📞 Contact
-For any inquiries, reach out to **[Your Name]** at [your-email@example.com].
+For any inquiries, reach out to **Emanuele Cammarata** at emanuele.cammarata01@gmail.com.
